@@ -21,11 +21,13 @@ An emergency ambulance service system that connects patients, hospitals, and amb
 
 ### Prerequisites
 
-- Docker and Docker Compose
-- Node.js (v16+)
-- npm or yarn
+- Docker and Docker Compose (for containerized setup)
+- Node.js (v16+) and npm/yarn (for local development)
+- PostgreSQL (for local development without Docker)
 
-### Installation
+## Running with Docker (Recommended)
+
+This method requires minimal setup and ensures consistency across different environments.
 
 1. Clone the repository:
 
@@ -34,76 +36,150 @@ An emergency ambulance service system that connects patients, hospitals, and amb
    cd instant-ambulance
    ```
 
-2. Set up environment variables:
+2. Start the development environment:
 
    ```bash
-   cp backend/.env.example backend/.env
-   cp frontend/.env.example frontend/.env
+   docker-compose -f docker-compose.dev.yml up -d
    ```
 
-3. Start the application using Docker:
+3. Access the application:
 
-   ```bash
-   docker-compose up -d
-   ```
-
-4. The application will be available at:
    - Frontend: http://localhost:5173
    - Backend API: http://localhost:5001
+   - Database: localhost:5433
 
-## Usage
+4. View logs (optional):
 
-### User
+   ```bash
+   # Frontend logs
+   docker logs -f ambulance-frontend-dev
 
-1. Register an account or use a demo account:
+   # Backend logs
+   docker logs -f ambulance-backend-dev
+   ```
 
-   - Email: `vibhor.gupta@example.com`
-   - Password: `Password123!`
+5. Stop the environment:
+   ```bash
+   docker-compose -f docker-compose.dev.yml down
+   ```
 
-2. Login to access the dashboard and emergency services.
-
-3. Press the SOS button to create an emergency request with your current location.
-
-4. View nearby hospitals and track your emergency request status.
-
-### Hospital
-
-1. Login with a hospital account:
-
-   - Email: `hospital@example.com`
-   - Password: `Password123!`
-
-2. View incoming emergency requests in the "Cases" page.
-
-3. Accept emergency requests and assign available drivers.
-
-4. Manage drivers (approve new driver registrations, view status).
-
-### Driver
-
-1. Login with a driver account (once approved by a hospital).
-
-2. View assigned emergencies and update status (arrived, completed).
-
-## Development
-
-### Running Locally (without Docker)
-
-#### Backend
+### Rebuilding after code changes:
 
 ```bash
-cd backend
-npm install
-npm run dev
+docker-compose -f docker-compose.dev.yml up -d --build
 ```
 
-#### Frontend
+## Running Without Docker (Local Development)
 
-```bash
-cd frontend
-npm install
-npm run dev
-```
+This method is ideal for active development with faster reload times and direct access to all services.
+
+### Setting up the Database
+
+1. Install PostgreSQL on your system
+2. Create a new database:
+   ```bash
+   createdb ambulance
+   ```
+3. Update the `.env` file in the backend directory with your database credentials
+
+### Starting the Backend
+
+1. Navigate to the backend directory:
+
+   ```bash
+   cd backend
+   ```
+
+2. Install dependencies:
+
+   ```bash
+   npm install
+   ```
+
+3. Run database migrations:
+
+   ```bash
+   npm run migrate
+   ```
+
+4. Start the development server:
+
+   ```bash
+   npm run dev
+   ```
+
+5. The backend will be available at http://localhost:5000
+
+### Starting the Frontend
+
+1. Open a new terminal and navigate to the frontend directory:
+
+   ```bash
+   cd frontend
+   ```
+
+2. Install dependencies:
+
+   ```bash
+   npm install
+   ```
+
+3. Update the API_URL in src/lib/api.ts to point to your backend:
+
+   ```typescript
+   const api = axios.create({
+   	baseURL: "http://localhost:5000/api/v1",
+   	// ...
+   });
+   ```
+
+4. Start the development server:
+
+   ```bash
+   npm run dev
+   ```
+
+5. The frontend will be available at http://localhost:5173
+
+## Demo Accounts
+
+### User Accounts
+
+- Email: `vibhor.gupta@example.com`
+- Password: `Password123!`
+- User Type: `user`
+
+### Hospital Account
+
+- Email: `hospital@example.com`
+- Password: `Password123!`
+- User Type: `hospital`
+
+## Testing the SOS Feature
+
+1. Login using the user account credentials
+2. Navigate to the "Emergency Services" page
+3. Press the SOS button to create an emergency request with your current location
+4. Allow location access when prompted
+5. View nearby hospitals in your area
+
+To test the complete flow:
+
+1. Login as a user and create an emergency
+2. Login as a hospital to view and accept the emergency
+3. Assign a driver to the emergency
+
+## Troubleshooting
+
+### Docker Issues
+
+- If containers fail to start, check logs: `docker logs ambulance-backend-dev`
+- To reset the database: `docker-compose -f docker-compose.dev.yml down -v` (warning: this deletes all data)
+
+### Local Development Issues
+
+- Backend connection errors: Check database connection in `.env` file
+- Frontend API errors: Ensure the backend URL is correctly set in `api.ts`
 
 ## License
 
