@@ -1,0 +1,75 @@
+# Dependencies
+node_modules/
+/.pnp
+.pnp.js
+yarn.lock
+package-lock.json
+
+# Production build files
+/dist/
+/build/
+/out/
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Debug logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+logs/
+*.log
+
+# Testing
+/coverage/
+.nyc_output/
+
+# Docker volumes and data
+data/
+db-data/
+volumes/
+
+# IDE and Editor folders
+/.idea/
+/.vscode/
+/.vs/
+*.swp
+*.swo
+.DS_Store
+*.sublime*
+.project
+.classpath
+.settings/
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# TypeScript
+*.tsbuildinfo
+
+# Optional eslint cache
+.eslintcache
+
+# Optional stylelint cache
+.stylelintcache
+
+# Backend specific
+/backend/dist/
+/backend/node_modules/
+
+# Frontend specific
+/frontend/dist/
+/frontend/node_modules/
+/frontend/.next/
+/frontend/out/
+/frontend/build/ 

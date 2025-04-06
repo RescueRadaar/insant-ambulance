@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "target": "es2022",
+    "module": "commonjs",
+    "rootDir": "backend/src",
+    "outDir": "backend/distd/coverage/dist",
+    "esModuleInterop": true,
+    "strict": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "sourceMap": true,
+    "declaration": true,
+    "types": ["node", "jest"],
+    "typeRoots": ["./node_modules/@types", "backend/src/@types"],
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
+  },
+  "include": ["backend/src/**/*"],
+  "exclude": ["node_modules", "backend/backend/testsnd/coverage/dist", "tests"]
+}
